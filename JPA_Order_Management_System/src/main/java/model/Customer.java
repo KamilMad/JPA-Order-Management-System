@@ -3,6 +3,7 @@ package model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
 
@@ -12,13 +13,14 @@ import java.util.List;
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GenericGenerator(name = "TimestampGenerator", type = TimestampIdGenerator.class)
+    @GeneratedValue(generator = "TimestampGenerator")
+    private long id;
 
     private String name;
-    private String email;
-
-    @OneToMany(mappedBy = "customer")
-    private List<Order> orders;
+//    private String email;
+//
+//    @OneToMany(mappedBy = "customer")
+//    private List<Order> orders;
 
 }

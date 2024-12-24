@@ -23,7 +23,7 @@ public class Main {
             em.getTransaction().begin();
 
             Customer customer = new Customer();
-            customer.setName("Ewa");
+            customer.setName("Joanna");
 
             em.persist(customer);
 
