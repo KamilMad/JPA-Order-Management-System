@@ -24,25 +24,43 @@ public class CustomerDao {
         }
     }
 
-    public Customer findById(long id) {
-        Customer customer;
-        try(EntityManager em = emf.createEntityManager()){
-            String jpql = "SELECT c FROM Customer c WHERE c.id = :id";
-            TypedQuery<Customer> q = em.createQuery(jpql, Customer.class);
-            q.setParameter("id", id);
+//    public Customer findById(long id) {
+//        Customer customer;
+//        try(EntityManager em = emf.createEntityManager()){
+//            String jpql = "SELECT c FROM Customer c WHERE c.id = :id";
+//            TypedQuery<Customer> q = em.createQuery(jpql, Customer.class);
+//            q.setParameter("id", id);
+//
+//            return q.getSingleResult();
+//        }catch (NoResultException e) {
+//            System.out.println("Customer with id " + id + " not found");
+//            return null;
+//        }
+//    }
 
-            return q.getSingleResult();
-        }catch (NoResultException e) {
-            System.out.println("Customer with id " + id + " not found");
-            return null;
-        }
+public Customer findById(long id) {
+    try(EntityManager em = emf.createEntityManager()){
+        return em.find(Customer.class, id);
     }
+}
 
     public List<Customer> findAll() {
         try(EntityManager em = emf.createEntityManager()) {
             String jpql = "SELECT c FROM Customer c";
             TypedQuery<Customer> q = em.createQuery(jpql, Customer.class);
             return q.getResultList();
+        }
+    }
+
+    public void deleteById(long id){
+        try(EntityManager em = emf.createEntityManager()){
+            em.getTransaction().begin();
+            Customer customer = em.find(Customer.class, id);
+            
+            if (customer != null){
+                em.remove(customer);
+            }
+            em.getTransaction().commit();
         }
     }
 
