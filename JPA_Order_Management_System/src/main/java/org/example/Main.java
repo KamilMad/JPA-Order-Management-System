@@ -4,10 +4,11 @@ import config.HibernateConfig;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import model.Customer;
+import model.Order;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -24,8 +25,34 @@ public class Main {
 
             Customer customer = new Customer();
             customer.setName("Joanna");
+            customer.setEmail("joanna@gmail");
+
+            Customer customer2 = new Customer();
+            customer2.setName("kasia");
+            customer2.setEmail("kasia@gmail");
+
+            Order o1 = new Order();
+            o1.setOrderDate(LocalDateTime.now());
+            o1.setTotalAmount(10.0);
+
+            Order o2 = new Order();
+            o2.setOrderDate(LocalDateTime.now());
+            o2.setTotalAmount(15.0);
+
+            Order o3 = new Order();
+            o3.setOrderDate(LocalDateTime.now());
+            o3.setTotalAmount(20.0);
+
+            customer.setOrders(List.of(o1,o2));
+            o1.setCustomer(customer);
+            o2.setCustomer(customer);
+            o3.setCustomer(customer2);
 
             em.persist(customer);
+            em.persist(customer2);
+            em.persist(o1);
+            em.persist(o2);
+            em.persist(o3);
 
             em.getTransaction().commit();
         }

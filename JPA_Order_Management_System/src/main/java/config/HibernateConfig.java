@@ -59,7 +59,7 @@ public class HibernateConfig implements PersistenceUnitInfo {
 
     @Override
     public List<String> getManagedClassNames() {
-        return List.of("model.Customer");
+        return List.of("model.Customer", "model.Order", "model.Product", "model.Category");
     }
 
     @Override
