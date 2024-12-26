@@ -19,7 +19,10 @@ public class Main {
 
         ProductDao productDao = new ProductDao(emf);
 
-        productDao.findAll().forEach(p -> System.out.println(p.getName()));
+        //productDao.findAll().forEach(p -> System.out.println(p.getName()));
+
+        productDao.findAllProductsByCategoryWithPriceLowerThanX("Electronics", 90)
+                        .forEach(p -> System.out.println(p.getName()));
 
         emf.close();
     }

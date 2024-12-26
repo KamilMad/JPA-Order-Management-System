@@ -2,7 +2,10 @@ package dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.TypedQuery;
 import model.Product;
+
+import java.util.List;
 
 public class ProductDao extends CrudDao<Product>{
 
@@ -25,6 +28,21 @@ public class ProductDao extends CrudDao<Product>{
                 throw new IllegalArgumentException("Product not found for id: " + id);
             }
             em.getTransaction().commit();
+        }
+    }
+
+    public List<Product> findAllProductsByCategoryWithPriceLowerThanX(String category, double price) {
+        try(EntityManager em = emf.createEntityManager()) {
+            String jpql = """
+                    SELECT p
+                    FROM Product p
+                    WHERE p.category.name = :category
+                    AND p.price < :price
+                    """;
+            TypedQuery<Product> q = em.createQuery(jpql, Product.class);
+            q.setParameter("category", category);
+            q.setParameter("price", price);
+            return q.getResultList();
         }
     }
 }

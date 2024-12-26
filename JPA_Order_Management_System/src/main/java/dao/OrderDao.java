@@ -26,7 +26,7 @@ public class OrderDao extends CrudDao<Order>{
 
             TypedQuery<Order> q = em.createQuery(jpql, Order.class);
             q.setParameter("customerId", customer.getId());
-            
+
             return q.getResultList();
         }
     }
