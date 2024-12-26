@@ -2,6 +2,7 @@ package org.example;
 
 import config.HibernateConfig;
 import dao.CustomerDao;
+import dao.ProductDao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import model.Category;
@@ -23,7 +24,9 @@ public class Main {
         EntityManagerFactory emf = new HibernatePersistenceProvider()
                 .createContainerEntityManagerFactory(new HibernateConfig(), properties);
 
-        CustomerDao customerDao = new CustomerDao(emf);
+        ProductDao productDao = new ProductDao(emf);
+
+        productDao.findAll().forEach(p -> System.out.println(p.getName()));
 
         emf.close();
     }

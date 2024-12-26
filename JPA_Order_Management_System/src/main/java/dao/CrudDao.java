@@ -3,37 +3,36 @@ package dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
-import model.Category;
-
 import java.util.List;
 
-public class OrderDao{
+public abstract class CrudDao<T> {
+    private final Class<T> entityType;
     private final EntityManagerFactory emf;
 
-
-    public OrderDao(EntityManagerFactory emf) {
+    public CrudDao(Class<T> entityType, EntityManagerFactory emf) {
+        this.entityType = entityType;
         this.emf = emf;
     }
 
 
-    public void save(Category category) {
+    public void save(T entity) {
         try(EntityManager em = emf.createEntityManager()){
             em.getTransaction().begin();
-            em.persist(category);
+            em.persist(entity);
             em.getTransaction().commit();
         }
     }
 
-    public Category findById(long id) {
+    public T findById(long id) {
         try(EntityManager em = emf.createEntityManager()) {
-            return em.find(Category.class, id);
+            return em.find(entityType, id);
         }
     }
 
-    public List<Category> findAll() {
+    public List<T> findAll() {
         try(EntityManager em = emf.createEntityManager()) {
-            String jpql = "SELECT c FROM Category c";
-            TypedQuery<Category> q = em.createQuery(jpql, Category.class);
+            String jpql = "SELECT t FROM " + entityType.getSimpleName() + " t";
+            TypedQuery<T> q = em.createQuery(jpql, entityType);
             return q.getResultList();
         }
     }
@@ -41,18 +40,18 @@ public class OrderDao{
     public void deleteById(long id){
         try(EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            Category c = em.find(Category.class, id);
-            if (c != null){
-                em.remove(c);
+            T t = em.find(entityType, id);
+            if (t != null){
+                em.remove(t);
             }
             em.getTransaction().commit();
         }
     }
 
-    public void update(Category category){
+    public void update(T t){
         try(EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            em.merge(category);
+            em.merge(t);
             em.getTransaction().commit();
         }
     }
