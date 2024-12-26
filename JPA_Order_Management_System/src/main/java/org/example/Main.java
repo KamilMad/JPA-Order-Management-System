@@ -1,17 +1,10 @@
 package org.example;
 
 import config.HibernateConfig;
-import dao.CustomerDao;
 import dao.ProductDao;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import model.Category;
-import model.Customer;
-import model.Order;
-import model.Product;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 public class Main {
