@@ -56,10 +56,18 @@ public Customer findById(long id) {
         try(EntityManager em = emf.createEntityManager()){
             em.getTransaction().begin();
             Customer customer = em.find(Customer.class, id);
-            
+
             if (customer != null){
                 em.remove(customer);
             }
+            em.getTransaction().commit();
+        }
+    }
+
+    public void update(Customer customer) {
+        try(EntityManager em = emf.createEntityManager()){
+            em.getTransaction().begin();
+            em.merge(customer);
             em.getTransaction().commit();
         }
     }
