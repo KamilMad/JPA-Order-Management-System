@@ -2,7 +2,11 @@ package dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.TypedQuery;
 import model.Customer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerDao extends CrudDao<Customer>{
 
@@ -28,6 +32,18 @@ public class CustomerDao extends CrudDao<Customer>{
             Customer customer = em.find(Customer.class, id);
             customer.setName(email);
             em.getTransaction().commit();
+        }
+    }
+
+    public double calculateTotalSpending(long id) {
+        List<Object[]> results = new ArrayList<>();
+        try(EntityManager em = emf.createEntityManager()){
+            String jpql = """ 
+                    SELECT SUM(o.totalAmount) FROM Order o JOIN o.customer c WHERE c.id = :id""";
+
+            TypedQuery<Double> q = em.createQuery(jpql, Double.class);
+            q.setParameter("id", id);
+            return q.getSingleResult();
         }
     }
 

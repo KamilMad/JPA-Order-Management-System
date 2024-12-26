@@ -1,6 +1,7 @@
 package org.example;
 
 import config.HibernateConfig;
+import dao.CustomerDao;
 import dao.ProductDao;
 import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.jpa.HibernatePersistenceProvider;
@@ -21,8 +22,9 @@ public class Main {
 
         //productDao.findAll().forEach(p -> System.out.println(p.getName()));
 
-        productDao.findAllProductsByCategoryWithPriceLowerThanX("Electronics", 90)
-                        .forEach(p -> System.out.println(p.getName()));
+        CustomerDao customerDao = new CustomerDao(emf);
+
+        System.out.println(customerDao.calculateTotalSpending(1));
 
         emf.close();
     }
