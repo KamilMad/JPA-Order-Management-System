@@ -22,9 +22,7 @@ public class Main {
 
         //productDao.findAll().forEach(p -> System.out.println(p.getName()));
 
-        CustomerDao customerDao = new CustomerDao(emf);
-
-        System.out.println(customerDao.calculateTotalSpending(1));
+        productDao.getMostPopularProduct();
 
         emf.close();
     }

@@ -7,6 +7,7 @@ import model.Customer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CustomerDao extends CrudDao<Customer>{
 
@@ -35,15 +36,14 @@ public class CustomerDao extends CrudDao<Customer>{
         }
     }
 
-    public double calculateTotalSpending(long id) {
+    public Optional<Double> calculateTotalSpending(long id) {
         try(EntityManager em = emf.createEntityManager()){
             String jpql = """ 
                     SELECT SUM(o.totalAmount) FROM Order o JOIN o.customer c WHERE c.id = :id""";
 
             TypedQuery<Double> q = em.createQuery(jpql, Double.class);
             q.setParameter("id", id);
-            Double result =  q.getSingleResult();
-            return result != null ? result : 0.0;
+            return Optional.ofNullable(q.getSingleResult());
         }
     }
 
