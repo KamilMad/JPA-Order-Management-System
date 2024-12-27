@@ -36,14 +36,14 @@ public class CustomerDao extends CrudDao<Customer>{
     }
 
     public double calculateTotalSpending(long id) {
-        List<Object[]> results = new ArrayList<>();
         try(EntityManager em = emf.createEntityManager()){
             String jpql = """ 
                     SELECT SUM(o.totalAmount) FROM Order o JOIN o.customer c WHERE c.id = :id""";
 
             TypedQuery<Double> q = em.createQuery(jpql, Double.class);
             q.setParameter("id", id);
-            return q.getSingleResult();
+            Double result =  q.getSingleResult();
+            return result != null ? result : 0.0;
         }
     }
 
